@@ -326,13 +326,21 @@ scanner = RealSecurityScanner(api_key)
 if page == "🏠 Dashboard":
     st.markdown('<h1 class="header-title">🛡️ Security Operations</h1>', unsafe_allow_html=True)
     
+    # Real-world telemetry derived dynamically from session state scan history
+    total_scans = len(st.session_state.scan_history)
+    total_open_ports = sum(len(data.get('open_ports', [])) for data in st.session_state.scan_history.values())
+    critical_count = sum(
+        1 for data in st.session_state.scan_history.values() 
+        if data.get('ai_result', {}).get('risk_level') == 'CRITICAL'
+    )
+    
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("🚨 Critical", "12")
+        st.metric("🚨 Critical Risks", critical_count)
     with col2:
-        st.metric("🎯 Threats", "47")
+        st.metric("🔌 Total Open Ports", total_open_ports)
     with col3:
-        st.metric("🔒 Systems", "1,200")
+        st.metric("🌐 Domains Scanned", total_scans)
         
     if st.session_state.active_domain:
         st.markdown("---")
