@@ -8,8 +8,4 @@ urllib3>=2.0
 certifi>=2023.0
 protobuf>=3.19.5,<4.0
 plotly>=5.17.0
-datetime
-pytz
-json5
-hashlib
-</parameter>
+pytz>=2024.1
